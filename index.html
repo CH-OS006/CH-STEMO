@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>CH-STEAM R3DEEMER</title>
+
+<style>
+:root{
+  --bg0:#0b0f14;
+  --bg1:#121b27;
+
+  --glass: rgba(255,255,255,.07);
+  --stroke: rgba(255,255,255,.12);
+
+  --txt:#eaf0ff;
+  --muted: rgba(234,240,255,.55);
+
+  --a:#1b8bd6;
+  --b:#66c0f4;
+
+  --shadow: 0 22px 70px rgba(0,0,0,.62);
+  --r: 22px;
+}
+
+/* themes */
+html[data-theme="neon"]{ --bg0:#050812; --bg1:#0b1030; --a:#4f8cff; --b:#37d7ff; }
+html[data-theme="purple"]{ --bg0:#070412; --bg1:#160a38; --a:#a855f7; --b:#4f8cff; }
+html[data-theme="ice"]{ --bg0:#03111a; --bg1:#06243b; --a:#37d7ff; --b:#22c55e; }
+html[data-theme="steam"]{ --bg0:#0b0f14; --bg1:#121b27; --a:#1b8bd6; --b:#66c0f4; --glass: rgba(255,255,255,.06); --stroke: rgba(255,255,255,.10); }
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  color:var(--txt);
+  background:
+    radial-gradient(1200px 560px at 50% -10%, color-mix(in srgb, var(--a) 30%, transparent), transparent 60%),
+    radial-gradient(900px 560px at 50% 120%, color-mix(in srgb, var(--b) 18%, transparent), transparent 60%),
+    linear-gradient(180deg,var(--bg1),var(--bg0));
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+
+/* theme button */
+.theme-btn{
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  width: 46px;
+  height: 46px;
+  border-radius: 16px;
+  border: 1px solid var(--stroke);
+  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+  backdrop-filter: blur(12px);
+  box-shadow: 0 16px 40px rgba(0,0,0,.35);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  user-select:none;
+}
+.theme-btn svg{
+  width: 22px;
+  height: 22px;
+  fill:none;
+  stroke: color-mix(in srgb, var(--a) 60%, white);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.container{ width:100%; max-width:520px; text-align:center; }
+
+/* logo */
+.logo-wrap{
+  margin-bottom:12px;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+}
+.logo-plate{
+  position:absolute;
+  top: 26px;
+  width: 230px;
+  height: 230px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 50% 40%, rgba(0,0,0,.05), rgba(0,0,0,.65));
+  filter: blur(12px);
+  opacity:.95;
+  z-index:0;
+}
+#chLogo{
+  width:190px;
+  height:190px;
+  z-index:1;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,.55));
+}
+.brand-title{
+  margin:0;
+  font-size:18px;
+  font-weight:950;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  background:linear-gradient(90deg,var(--a),var(--b));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  z-index:1;
+}
+
+/* card */
+.card{
+  background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.04));
+  border:1px solid var(--stroke);
+  border-radius: var(--r);
+  backdrop-filter:blur(16px);
+  box-shadow:var(--shadow);
+  padding:14px;
+  text-align:left;
+}
+
+textarea{
+  width:100%;
+  min-height:68px;
+  max-height:100px;
+  border-radius:14px;
+  border:1px solid var(--stroke);
+  background:rgba(5,8,18,.55);
+  color:var(--txt);
+  padding:10px 12px;
+  font-size:14px;
+  resize:vertical;
+  outline:none;
+}
+textarea:focus{
+  border-color: color-mix(in srgb, var(--a) 70%, white);
+  box-shadow:0 0 0 4px color-mix(in srgb, var(--a) 14%, transparent);
+}
+
+.row{
+  display:flex;
+  gap:10px;
+  margin-top:10px;
+}
+.redeem{
+  flex:1;
+  border:0;
+  border-radius:14px;
+  padding:13px 14px;
+  font-weight:900;
+  font-size:14px;
+  color:white;
+  cursor:pointer;
+  position:relative;
+  background:linear-gradient(135deg,var(--a),var(--b));
+  box-shadow:0 18px 35px color-mix(in srgb, var(--b) 18%, transparent);
+  overflow:hidden;
+}
+.redeem:active{transform:scale(.99)}
+.redeem:before{
+  content:"";
+  position:absolute; inset:-2px;
+  background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.20), rgba(255,255,255,0));
+  transform: translateX(-60%);
+  animation: shine 2.2s infinite;
+  opacity:.7;
+}
+@keyframes shine{
+  0%{transform:translateX(-65%)}
+  55%{transform:translateX(120%)}
+  100%{transform:translateX(120%)}
+}
+
+/* Toast line (hidden by default) */
+.toast{
+  margin-top:12px;
+  display:none;
+  padding:10px 12px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.18);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size:12.5px;
+  color: color-mix(in srgb, var(--txt) 92%, var(--muted));
+  box-shadow: 0 16px 40px rgba(0,0,0,.25);
+}
+.toast b{
+  color: color-mix(in srgb, var(--b) 70%, white);
+  font-weight:950;
+}
+</style>
+</head>
+
+<body>
+
+<button class="theme-btn" id="themeBtn" aria-label="Change theme" title="Change theme">
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M12 3v3M12 18v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M3 12h3M18 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>
+    <path d="M12 7a5 5 0 1 0 0 10a5 5 0 0 0 0-10Z"/>
+  </svg>
+</button>
+
+<div class="container">
+
+  <div class="logo-wrap">
+    <div class="logo-plate"></div>
+
+    <svg id="chLogo" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="chGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="var(--a)"/>
+          <stop offset="100%" stop-color="var(--b)"/>
+        </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="5" result="b"/>
+          <feMerge>
+            <feMergeNode in="b"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+
+      <circle cx="110" cy="110" r="96" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.10)" stroke-width="2"/>
+      <circle cx="110" cy="110" r="78" fill="none" stroke="rgba(255,255,255,.10)" stroke-width="6"/>
+
+      <circle cx="110" cy="110" r="74" fill="none" stroke="url(#chGrad)" stroke-width="5"
+              stroke-dasharray="14 10" stroke-linecap="round" filter="url(#glow)">
+        <animateTransform attributeName="transform" type="rotate" from="0 110 110" to="360 110 110" dur="10s" repeatCount="indefinite"/>
+      </circle>
+
+      <circle cx="110" cy="110" r="58" fill="none" stroke="rgba(255,255,255,.16)" stroke-width="4"
+              stroke-dasharray="2 12" stroke-linecap="round">
+        <animateTransform attributeName="transform" type="rotate" from="360 110 110" to="0 110 110" dur="16s" repeatCount="indefinite"/>
+      </circle>
+
+      <circle cx="110" cy="110" r="38" fill="rgba(5,8,18,.80)" stroke="url(#chGrad)" stroke-width="3" filter="url(#glow)"/>
+      <text x="50%" y="126" text-anchor="middle"
+            font-family="Segoe UI, Arial"
+            font-size="56"
+            font-weight="950"
+            letter-spacing="6"
+            fill="url(#chGrad)"
+            filter="url(#glow)">CH</text>
+    </svg>
+
+    <h1 class="brand-title">CH-STEAM R3DEMER</h1>
+  </div>
+
+  <div class="card">
+    <textarea id="keys" placeholder="Paste key(s) here..."></textarea>
+
+    <div class="row">
+      <button class="redeem" onclick="redeemNow()">REDEEM</button>
+    </div>
+
+    <!-- ONLY shows when pressing REDEEM -->
+    <div class="toast" id="toast"><b>REDEEMED:</b> <span id="toastKey">—</span></div>
+
+  </div>
+</div>
+
+<script>
+function clean(k){ return (k||"").trim().replace(/\s+/g,""); }
+
+function openKey(key){
+  window.open("https://store.steampowered.com/account/registerkey?key=" + encodeURIComponent(key), "_blank");
+}
+
+function showToast(key){
+  const t = document.getElementById("toast");
+  document.getElementById("toastKey").textContent = key;
+  t.style.display = "block"; // stays visible
+}
+
+function redeemNow(){
+  const raw = document.getElementById("keys").value.split("\n");
+  const keys = raw.map(clean).filter(k => k && !k.startsWith("#"));
+  if(keys.length === 0) return;
+
+  const k = keys[0]; // only first key (fast)
+  openKey(k);
+
+  // clean UI
+  document.getElementById("keys").value = "";
+
+  // show tiny line only now
+  showToast(k);
+}
+
+/* theme cycler */
+const themes = ["steam","neon","purple","ice"];
+let themeIndex = 0;
+const saved = localStorage.getItem("ch_theme");
+if(saved && themes.includes(saved)) themeIndex = themes.indexOf(saved);
+document.documentElement.setAttribute("data-theme", themes[themeIndex]);
+
+document.getElementById("themeBtn").addEventListener("click", () => {
+  themeIndex = (themeIndex + 1) % themes.length;
+  const t = themes[themeIndex];
+  document.documentElement.setAttribute("data-theme", t);
+  localStorage.setItem("ch_theme", t);
+});
+</script>
+
+</body>
+</html>
